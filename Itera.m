@@ -1008,7 +1008,7 @@ toc
 %ISS
 
 VSS = VSSX;
-VSS(1,:)=[1 1*(cosd(-120)+j*sind(-120)) 1*(cosd(120)+j*sind(120))];
+%VSS(1,:)=[1 1*(cosd(-120)+j*sind(-120)) 1*(cosd(120)+j*sind(120))];
 
 MY_CC = 0;
 
@@ -1148,5 +1148,30 @@ for i1 = 1:NN
     IFT(i1,1:3) = [Xt(1,i1) Xt(2,i1) Xt(3,i1)]; %Falta Trifásica (ABC)
 end
 
-M=M3;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         EM CONSTRUÇÃO!
+%Investigar se fazem sentido!
+for i1 = 1:NN
+    VCCM(i1,1:3) = VSS(i1,1:3) + IFM(i1,1:3).*YFS(i1,1:3);
+    VCCB(i1,1:3) = VSS(i1,1:3) + IFB(i1,1:3).*YFS(i1,1:3);
+    VCCT(i1,1:3) = VSS(i1,1:3) + IFT(i1,1:3).*YFS(i1,1:3);
+end
+
+IF_GD(i1,1:3) = 
+
+    if VCCM(MPL,MPC) >= 0 && VCCM(MPL,MPC) < 0.1
+        IF_GD(MPL,MPC) = 2;
+    end
+    if VCCM(MPL,MPC) > 0.1 && VCCM(MPL,MPC) < 0.5
+        IF_GD(MPL,MPC) = 2;
+    end
+    if VCCM(MPL,MPC) >= 0.5 && VCCM(MPL,MPC) < 0.8
+        IF_GD(MPL,MPC) = -0.4*VCCM(MPL,MPC)+1.3;
+    end
+    if VCCM(MPL,MPC) >= 0.8 && VCCM(MPL,MPC) < 1
+        IF_GD(MPL,MPC) = -0.8*VCCM(MPL,MPC)+1.8;
+    end
+    if VCCM(MPL,MPC) >= 1 && VCCM(MPL,MPC) < 1.1
+       IF_GD(MPL,MPC) = -1*VCCM(MPL,MPC)+2;
+    end
+
 
